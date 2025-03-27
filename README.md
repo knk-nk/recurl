@@ -47,8 +47,8 @@ or install `lua` package on your Linux system (it will probably already be there
 ## Task values
 - `root` Root directory of the website
 - `fext` File extension (type)
-- `excl` * Exclude paths containing the specified patterns *
-- `fname` File name
+- `fname` File name (you must choose either `fext` or `fname`)
+- `excl` * Exclude paths containing the specified patterns
 - `find` Action: find files containing the specified plain text
 - `match` * Action: match strings in the file containing the specified pattern
 - `repl` Action: replace matched strings with the specified plain text
