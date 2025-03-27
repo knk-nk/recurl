@@ -28,7 +28,8 @@ Values:
 - `fext` File extension (type)
 - `fname` File name
 - `find` Action: find files containing the specified plain text
-- `match` Action: match strings in the file containing the specified pattern (each can be included more than once per task)
+- `match` Action: match strings in the file containing the specified pattern<br>
+(each can be included more than once per task)
 - `repl` Action: replace matched strings with the specified plain text
 
 Example task file:
