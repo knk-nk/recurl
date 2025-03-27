@@ -12,6 +12,7 @@ or install `lua` package on your Linux system (it will probably already be there
 2. On Windows, unpack the Lua binaries anywhere, then open all `.lua` scripts with `lua54.exe`
 3. Execute `create_dirs.lua` script
 4. That's all. Just run either `recurl.lua` or `recurl.debug.lua`
+<br>
 
 # Functions
 ### Website crawling
@@ -21,10 +22,11 @@ or install `lua` package on your Linux system (it will probably already be there
 > Connects to FTP server and replaces provided data
 
 ### RSS feeds generation
+> Generates RSS feeds based on the content from the specified webpage
+
 > [!WARNING]
 > Experimental feature
-
-> Generates RSS feeds based on the content from the specified webpage
+<br>
 
 # Directories
 - `.netrc` FTP server login info
@@ -33,6 +35,7 @@ or install `lua` package on your Linux system (it will probably already be there
 - `files` All generated files (sitemaps, rss, crawler results)
 - `tasks` FTP file modification tasks
 - `tmp` Modified FTP files that are being sent to the server
+<br>
 
 # Tasks
 > [!NOTE]
@@ -41,7 +44,7 @@ or install `lua` package on your Linux system (it will probably already be there
 > [!TIP]
 > \* = Can be declared more than once
 
-Values:
+## Task values
 - `root` Root directory of the website
 - `fext` File extension (type)
 - `excl` * Exclude paths containing the specified patterns *
@@ -50,7 +53,7 @@ Values:
 - `match` * Action: match strings in the file containing the specified pattern
 - `repl` Action: replace matched strings with the specified plain text
 
-Example task file:
+## Example task file
 ```
 root  /public_html/
 
