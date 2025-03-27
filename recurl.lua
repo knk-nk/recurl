@@ -1,4 +1,4 @@
-local ver = '0.1.0327.1601'
+local ver = '0.1.0327.1701'
 require 'shell'
 local ftp = require 'ftp'
 local cligui = require 'cligui'
@@ -8,6 +8,11 @@ local allowed_ext = {'php', 'html'}
 local domain, domain_match, pass, exclude, overall,
 	  meta, totalPages, bkup, temp, links
 local tdate = os.date('%Y-%m-%d_%H-%M-%S')
+
+-- Change array to enum
+for i,v in ipairs(allowed_ext) do
+	allowed_ext[v] = i
+end
 
 -- Sitemap templates
 local sitemap_temp =
@@ -93,11 +98,9 @@ local function crawl(url, expr)
 		end
 
 		-- Filter out unallowed extensions
-		for _,v in ipairs(allowed_ext) do
-			local ext = a:match('[.][%a%d]+$')
-			if ext and ((ext ~= v) or (ext ~= v:upper())) then
-				excluded = true
-			end
+		local ext = a:match('[.]([%a%d]+)$')
+		if ext and (not allowed_ext[ext]) then
+			excluded = true
 		end
 
 		-- Crawl internal link
