@@ -21,6 +21,16 @@ or install `lua` package on your Linux system (it will probably already be there
 - `tmp` Modified FTP files that are being sent to the server
 
 # Tasks
+> Note: Information on Lua string patterns can be found [here](https://www.lua.org/pil/20.2.html)
+
+Values:
+- `root` Root directory of the website
+- `fext` File extension (type)
+- `fname` File name
+- `find` Action: find files containing the specified plain text
+- `match` Action: match strings in the file containing the specified pattern
+- `repl` Action: replace matched strings with the specified plain text
+
 Example task file:
 ```
 root  /public_html/
@@ -35,4 +45,3 @@ find	123
 match	123
 repl	abc
 ```
-Information on Lua string patterns can be found [here](https://www.lua.org/pil/20.2.html)
