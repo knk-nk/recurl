@@ -1,6 +1,7 @@
 CLI utility script for "curl" written in Lua
 (seo crawler, batch ftp file modifier, rss/sitemap generator and more)
-> Note: Currently written for Windows only, but includes compatibility functions for Linux and will be available on Linux systems soon
+> [!NOTE]
+> Currently written for Windows only, but includes compatibility functions for Linux and will be available on Linux systems soon
 
 Includes recent curl binary for Windows:<br>
 https://curl.se/windows/dl-8.12.1_4/curl-8.12.1_4-win64-mingw.zip
@@ -12,6 +13,19 @@ or install `lua` package on your Linux system (it will probably already be there
 3. Execute `create_dirs.lua` script
 4. That's all. Just run either `recurl.lua` or `recurl.debug.lua`
 
+# Functions
+### Website crawling
+> Scans HTML contents of the website and writes recorded data in `files`, including `sitemap.xml`
+
+### FTP file data replacement
+> Connects to FTP server and replaces provided data
+
+### RSS feeds generation
+> [!WARNING]
+> Experimental feature
+
+> Generates RSS feeds based on the content from the specified webpage
+
 # Directories
 - `.netrc` FTP server login info
 - `bak` FTP file backups
@@ -21,15 +35,19 @@ or install `lua` package on your Linux system (it will probably already be there
 - `tmp` Modified FTP files that are being sent to the server
 
 # Tasks
-> Note: Information on Lua string patterns can be found [here](https://www.lua.org/pil/20.2.html)
+> [!NOTE]
+> Information on Lua string patterns can be found [here](https://www.lua.org/pil/20.2.html)
+
+> [!TIP]
+> \* = Can be declared more than once
 
 Values:
 - `root` Root directory of the website
 - `fext` File extension (type)
+- `excl` * Exclude paths containing the specified patterns *
 - `fname` File name
 - `find` Action: find files containing the specified plain text
-- `match` Action: match strings in the file containing the specified pattern<br>
-(each can be included more than once per task)
+- `match` * Action: match strings in the file containing the specified pattern
 - `repl` Action: replace matched strings with the specified plain text
 
 Example task file:
