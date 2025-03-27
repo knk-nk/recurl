@@ -35,10 +35,10 @@ local rss_item = [[
 ]]
 
 local function rss(src_url, rss_url, _dir, _timezone)
-	local index, domain, page =
+	local index, domain, page, items, sorted =
 		src_url:match('(http[s]?://.-)/'),
 		src_url:match('http[s]?://(.-)/'),
-		curl(src_url)
+		curl(src_url), {}, {}
 
 	-- Format {rss_url} string
 	if not rss_url:match('^http') then
@@ -73,12 +73,6 @@ local function rss(src_url, rss_url, _dir, _timezone)
 	-- Get the last word from the {src_url} path
 	local last = src_url:gsub('/$', ''):gsub('.+/', '')
 
-	-- Get hrefs that includes {last}
-	local items, hrefs, sorted = {}, {}, {}
-	for href in page:gmatch('href="([_%a%d/-]+'..last..'[_%a%d/-]+)"') do
-		hrefs[href] = 1
-	end
-
 	-- Trial task: Get <a> tags and sort them into [link]{text,image} arrays
 	for a in page:gmatch('<a .->.-</a>') do
 		local link, img, txt =
@@ -89,13 +83,13 @@ local function rss(src_url, rss_url, _dir, _timezone)
 			img = img:gsub('[	]', ''):gsub('\n', ' '):gsub('  ', '')
 		end
 		for t in a:gmatch('>(.-)<') do
-			if t:len() > 50 then
+			if utf8.len(t) > 35 then
 				txt = t
 			end
 		end
 
 		-- Create and merge arrays with identical links
-		if link:match(last) then
+		if link:match(last) or (link:len() > 40) then
 			if not sorted[link] then
 				sorted[link] = {
 					txt = txt,
@@ -124,7 +118,8 @@ local function rss(src_url, rss_url, _dir, _timezone)
 			}
 			local str = rss_item:gsub('/%]/%]', ']]')
 			for id in str:gmatch('{([%a]+)}') do
-				str = str:gsub('{'..id..'}', val[id])
+				local _v = (val[id] or ''):gsub('%%', '')
+				str = str:gsub('{'..id..'}', _v)
 			end
 			table.insert(items, str)
 		end

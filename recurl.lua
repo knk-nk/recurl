@@ -1,10 +1,10 @@
-local ver = '0.1.0327.1322'
+local ver = '0.1.0327.1601'
 require 'shell'
 local ftp = require 'ftp'
 local cligui = require 'cligui'
 local rss = require 'rss'
 local html = {}
-local allowed_ext = { 'php', 'html' }
+local allowed_ext = {'php', 'html'}
 local domain, domain_match, pass, exclude, overall,
 	  meta, totalPages, bkup, temp, links
 local tdate = os.date('%Y-%m-%d_%H-%M-%S')
