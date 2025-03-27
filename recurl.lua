@@ -487,8 +487,8 @@ local function run(url)
 	cligui({ m={3,0}, p={2,2}, b='.' }, 'Recursive "curl"  v'..ver, '',
 		'See the list below for available options.', 'Type preferred number and hit Enter.')
 	cligui({ m={3,1} }, '1. Run website crawler')
-	cligui({ m={3,0} }, '2. Modify data over FTP ')
-	cligui({ m={3,0} }, '3. Generate Turbo RSS ')
+	cligui({ m={3,0} }, '2. Modify data over FTP')
+	cligui({ m={3,0} }, '3. Generate Turbo RSS (experimental)')
 	cligui({ m={3,0} }, '0. Exit the program')
 	cligui({ m={3,0} }, '(If none specified, go to previous menu)')
 	io.write '\n      > '
