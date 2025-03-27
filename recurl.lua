@@ -312,13 +312,6 @@ local function run_ftp(url)
 			for _match in batch:gmatch('match[ 	](.-)[\n]') do
 				table.insert(tasks[fext][repl].M, _match)
 			end
-			print '- - - - - -'
-			print('fext/fname: '..fext)
-			print('find: '..tasks[fext][repl]._find)
-			print('match[1]: '..tasks[fext][repl].M[1])
-			print('repl: '..repl)
-			print('batch:\n'..batch)
-			print '- - - - - -'
 		end
 	else
 		io.write 'File extension (optional) (default: php): '
