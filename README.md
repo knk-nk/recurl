@@ -1,7 +1,7 @@
 CLI utility script for "curl" written in Lua
-(seo crawler, batch ftp file modifier, rss/sitemap generator and more)
+(SEO crawler, batch FTP file modifier, RSS/sitemap generator and more)
 > [!NOTE]
-> Currently written for Windows only, but includes compatibility functions for Linux and will be available on Linux systems soon
+> Currently written for Windows only, but includes compatibility functions for Linux, and will be available on Linux systems soon
 
 Includes recent curl binary for Windows:<br>
 https://curl.se/windows/dl-8.12.1_4/curl-8.12.1_4-win64-mingw.zip
@@ -9,8 +9,8 @@ https://curl.se/windows/dl-8.12.1_4/curl-8.12.1_4-win64-mingw.zip
 # Usage
 1. [Download lua binaries for windows](https://sourceforge.net/projects/luabinaries/files/5.4.2/Tools%20Executables/lua-5.4.2_Win64_bin.zip/download)
 or install `lua` package on your Linux system (it will probably already be there though)
-2. On Windows, unpack the Lua binaries anywhere, then open all `.lua` scripts with `lua54.exe`
-3. Execute `create_dirs.lua` script
+2. On Windows, unpack the Lua binaries anywhere, then set `lua54.exe` as a default program for all `.lua` files
+3. Run `create_dirs.lua` script
 4. That's all. Just run either `recurl.lua` or `recurl.debug.lua`
 <br>
 
@@ -32,7 +32,7 @@ or install `lua` package on your Linux system (it will probably already be there
 - `.netrc` FTP server login info
 - `bak` FTP file backups
 - `bin` curl binaries
-- `files` All generated files (sitemaps, rss, crawler results)
+- `files` All generated files (sitemaps, RSS, crawler results)
 - `tasks` FTP file modification tasks
 - `tmp` Modified FTP files that are being sent to the server
 <br>
@@ -49,9 +49,9 @@ or install `lua` package on your Linux system (it will probably already be there
 - `fext` File extension (type)
 - `fname` File name (you must choose either `fext` or `fname`)
 - `excl` * Exclude paths containing the specified patterns
-- `find` Action: find files containing the specified plain text
-- `match` * Action: match strings in the file containing the specified pattern
-- `repl` Action: replace matched strings with the specified plain text
+- `find` Find files containing the specified plain text
+- `match` * Match strings in the file containing the specified pattern
+- `repl` Replace matched strings with the specified plain text
 
 ## Example task file
 ```
