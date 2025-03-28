@@ -1,4 +1,4 @@
-local ver = '0.1.0327.1701'
+local ver = '0.1.0328.1709'
 require 'shell'
 local ftp = require 'ftp'
 local cligui = require 'cligui'
@@ -47,6 +47,7 @@ end
 
 -- Get page metadata
 function html.meta(url, page)
+	local url = url:gsub('^"', ''):gsub('"$', '')
 	if url:match('[&?!#+;:]') then return end
 	local metadata = {
 		title = '<title>(.-)</title>',
@@ -69,6 +70,7 @@ end
 
 -- URL crawling recursive loop
 local function crawl(url, expr)
+	local url = url:gsub('^"', ''):gsub('"$', '')
 	print('\nURL: '..url)
 	local page = curl(url)
 
@@ -202,13 +204,14 @@ local function run_crawl(url, args)
 	local f = io.open(path..'sitemap.xml', 'w')
 	for v in pairs(links.internal) do
 		if not v:match('[&?!#+;:]') then
-			local URL = 'https://'..domain..v
+			local URL = 'https://'..domain..v:gsub('%%', '{PCNT}')
 			local _,lvl = v:gsub('/', '')
 			local DEPTH = 1.1 - tonumber('0.'..lvl)
 			local entry = url_temp
 				:gsub('{URL}', URL)
 				:gsub('{DATE}', DATE)
 				:gsub('{DEPTH}', DEPTH)
+				:gsub('{PCNT}', '%%')
 			table.insert(sitemap, entry)
 		end
 	end
