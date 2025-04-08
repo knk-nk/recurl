@@ -36,7 +36,7 @@ local rss_item = [[
 
 local function rss(src_url, rss_url, _dir, _timezone)
 	local index, domain, page, items, sorted =
-		src_url:match('(http[s]?://.-)/'),
+		src_url:match('(http[s]?://.-)/') or 'https://'..src_url,
 		src_url:match('http[s]?://(.-)/'),
 		curl(src_url), {}, {}
 
@@ -89,7 +89,7 @@ local function rss(src_url, rss_url, _dir, _timezone)
 		end
 
 		-- Create and merge arrays with identical links
-		if link:match(last) or (link:len() > 40) then
+		if link and (link:match(last) or (link:len() > 40)) then
 			if not sorted[link] then
 				sorted[link] = {
 					txt = txt,

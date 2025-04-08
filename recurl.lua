@@ -1,4 +1,4 @@
-local ver = '0.1.0328.1709'
+local ver = '0.1.0402.1805'
 require 'shell'
 local ftp = require 'ftp'
 local cligui = require 'cligui'
@@ -56,7 +56,7 @@ function html.meta(url, page)
 	}
 	for i,v in pairs(metadata) do
 		local dt = page:match(v)
-		if dt then
+		if dt and (dt ~= '') then
 			if not meta[i][dt] then
 				meta[i][dt] = {url}
 			else
