@@ -395,6 +395,7 @@ local function run_ftp(url)
 						print('< Find by name:     '..fname)
 					end
 					local found = curl('https://'..domain..'/grep.php', args)
+					found = found:gsub('<pre>Code found[:]<br><br>', '<pre>Code found:<br><br>\n')
 
 					-- File processing
 					for fpath in found:gmatch('\n[.]/(.-)[:][%d]+[:]') do
