@@ -189,6 +189,7 @@ local function run_crawl(url, args)
 
 	-- Write links
 	local f = io.open(path..'links.txt', 'w')
+	table.sort(links)
 	for i,v in pairs(links) do
 		f:write(i..':\n')
 		for link in pairs(v) do
@@ -396,7 +397,7 @@ local function run_ftp(url)
 					local found = curl('https://'..domain..'/grep.php', args)
 
 					-- File processing
-					for fpath in found:gmatch('[ 	]?[.]/(.-)[:\n$]') do
+					for fpath in found:gmatch('\n[.]/(.-)[:][%d]+[:]') do
 						-- Check for excluded patterns in filepath
 						local excluded
 						for _,v in ipairs(rules.excl) do
