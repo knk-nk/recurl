@@ -419,7 +419,7 @@ local function run_ftp(url)
 							local file = ftp:get(netrc, rootdir..fpath)
 							local repl = repl:gsub('\\n', '\n'):gsub('[ ]+$', '')
 
-							if file:match(repl) then
+							if file:match(_match) then
 								-- Backup received file
 								if not bkup['bak/'..path_dir] then
 									mkdir('bak/'..path_dir)
