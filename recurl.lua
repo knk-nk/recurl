@@ -383,6 +383,8 @@ local function run_ftp(url)
 				local fname = rules.fname
 				for i, _match in pairs(rules.M) do
 					local _find = rules._find or ''
+					pass[repl] = {}
+					temp = {}
 
 					-- Obtain task info and send it to grep.php
 					print('\n< File type:        '..fext)
@@ -415,51 +417,58 @@ local function run_ftp(url)
 							local path_dir = domain..'/'..tdate..'/'..(fpath:match('.+/') or '')
 							local path_doc = domain..'/'..tdate..'/'..fpath
 							local file = ftp:get(netrc, rootdir..fpath)
+							local repl = repl:gsub('\\n', '\n'):gsub('[ ]+$', '')
 
-							-- Backup received file
-							if not bkup['bak/'..path_dir] then
-								mkdir('bak/'..path_dir)
-								bkup['bak/'..path_dir] = 1
-							end
-							if not bkup['bak/'..path_doc] then
-								bkup['bak/'..path_doc] = 1
-								local f_bak = io.open('bak/'..path_doc, 'w')
-								if f_bak then
-									f_bak:write(file)
-									f_bak:close()
-								else
-									print('I/O Error: Incorrect path: bak/'..path_doc)
+							if file:match(repl) then
+								-- Backup received file
+								if not bkup['bak/'..path_dir] then
+									mkdir('bak/'..path_dir)
+									bkup['bak/'..path_dir] = 1
 								end
-							end
+								if not bkup['bak/'..path_doc] then
+									bkup['bak/'..path_doc] = 1
+									local f_bak = io.open('bak/'..path_doc, 'w')
+									if f_bak then
+										f_bak:write(file)
+										f_bak:close()
+									else
+										print('I/O Error: Incorrect path: bak/'..path_doc)
+									end
+								end
 
-							-- Modify file
-							if not file then
-								print('Error: File not found: '..rootdir..fpath); return
+								-- Modify file
+								if not file then
+									print('Error: File not found: '..rootdir..fpath); return
+								else
+									file = file:gsub(_match, repl)
+								end
+
+								-- Save modified version of the file and send it to the server
+								if not temp['tmp/'..path_dir] then
+									mkdir('tmp/'..path_dir)
+									bkup['tmp/'..path_dir] = 1
+								end
+								if not temp['tmp/'..path_doc] then
+									temp['tmp/'..path_doc] = 1
+									local f_temp = io.open('tmp/'..path_doc, 'w')
+									if f_temp then
+										f_temp:write(file)
+										f_temp:close()
+										print('> send:  tmp/'..path_doc)
+										print('> to:    <FTP>'..rootdir..(fpath:match('.+/') or ''))
+										ftp:send(netrc, 'tmp/'..path_doc, rootdir..(fpath:match('.+/') or ''))
+									else
+										print('I/O Error: Incorrect path: tmp/'..path_doc)
+									end
+								end
+
 							else
-								local repl = repl:gsub('\\n', '\n'):gsub('[ ]+$', '')
-								file = file:gsub(_match, repl)
+								print 'Info: File does not contain matched pattern, skipping'
 							end
 
-							-- Save modified version of the file and send it to the server
-							if not temp['tmp/'..path_dir] then
-								mkdir('tmp/'..path_dir)
-								bkup['tmp/'..path_dir] = 1
-							end
-							if not temp['tmp/'..path_doc] then
-								temp['tmp/'..path_doc] = 1
-								local f_temp = io.open('tmp/'..path_doc, 'w')
-								if f_temp then
-									f_temp:write(file)
-									f_temp:close()
-									print('> send:  tmp/'..path_doc)
-									print('> to:    <FTP>'..rootdir..(fpath:match('.+/') or ''))
-									ftp:send(netrc, 'tmp/'..path_doc, rootdir..(fpath:match('.+/') or ''))
-								else
-									print('I/O Error: Incorrect path: tmp/'..path_doc)
-								end
-							end
 						end
 					end
+
 				end
 			end
 		else
