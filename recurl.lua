@@ -6,7 +6,7 @@ local rss = require 'rss'
 local html = {}
 local allowed_ext = {'php', 'html'}
 local domain, domain_match, pass, exclude, overall,
-	  meta, totalPages, bkup, temp, links
+	  meta, totalPages, bkup, temp, links, validate
 local tdate = os.date('%Y-%m-%d_%H-%M-%S')
 
 -- Change array to enum
@@ -68,6 +68,32 @@ function html.meta(url, page)
 	end
 end
 
+-- Validate for data structure and syntax errors
+function html.validate(url, page)
+	local patterns = {
+		{'Image/Alt attributes missing', '<img .->'},
+		{'Headings', '<h[%d].-</h[%d]>'},
+	}
+	local arr_string = {}
+	for _,v in ipairs(patterns) do
+		table.insert(arr_string, v[1]..':')
+		for m in page:gmatch(v[2]) do
+			m = m:gsub('\n', ' ')
+
+			if v[1] == patterns[1][1] then -- Alts
+				if not m:match(' alt=') then
+					table.insert(arr_string, '	'..m)
+				end
+
+			else -- Other
+				table.insert(arr_string, '	'..m)
+			end
+
+		end
+	end
+	validate[url] = table.concat(arr_string, '\n')
+end
+
 -- URL crawling recursive loop
 local function crawl(url, expr)
 	local url = url:gsub('^"', ''):gsub('"$', '')
@@ -79,6 +105,9 @@ local function crawl(url, expr)
 
 	-- Get page metadata
 	html.meta(url, page)
+
+	-- Validate page
+	html.validate(url, page)
 
 	-- Scan all href links
 	for href in page:gmatch('href=["\'](.-)["\']') do
@@ -151,6 +180,7 @@ local function run_crawl(url, args)
 	}
 	totalPages = 1
 	links = { internal={}, external={} }
+	validate = {}
 
 	-- Create directory
 	local path = 'files/'..domain..'/'..tdate..'/'
@@ -196,6 +226,14 @@ local function run_crawl(url, args)
 			f:write('	'..link..'\n')
 		end
 		f:write('\n')
+	end
+	f:close()
+
+	-- Write validation results
+	local f = io.open(path..'validation.txt', 'w')
+	table.sort(validate)
+	for i,v in pairs(validate) do
+		f:write(string.format('--> URL: %s\n%s\n\n', i, v))
 	end
 	f:close()
 
